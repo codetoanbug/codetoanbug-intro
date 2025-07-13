@@ -1,0 +1,248 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Netflix Intro - Codetoanbug</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background-color: #000;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            overflow: hidden;
+            font-family: 'Helvetica Neue', Arial, sans-serif;
+        }
+
+        .netflix-intro {
+            position: relative;
+            width: 100%;
+            height: 100%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background: #000;
+        }
+
+        .netflix-logo {
+            font-size: 100px;
+            font-weight: 900;
+            letter-spacing: -5px;
+            color: #e50914;
+            text-transform: uppercase;
+            position: relative;
+            animation: netflixIntro 4s cubic-bezier(0.5, 0, 0.5, 1) forwards;
+            transform-origin: center;
+        }
+
+        @keyframes netflixIntro {
+            0% {
+                transform: scale(0.8);
+                opacity: 0;
+                letter-spacing: -5px;
+            }
+            20% {
+                transform: scale(1);
+                opacity: 1;
+                letter-spacing: -5px;
+            }
+            50% {
+                transform: scale(1);
+                opacity: 1;
+                letter-spacing: -5px;
+            }
+            70% {
+                transform: scale(1.5);
+                opacity: 1;
+                letter-spacing: 0px;
+            }
+            100% {
+                transform: scale(80);
+                opacity: 0;
+                letter-spacing: 20px;
+                filter: blur(20px);
+            }
+        }
+
+        /* Vignette effect */
+        .vignette {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: radial-gradient(ellipse at center, transparent 0%, rgba(0,0,0,0.4) 100%);
+            pointer-events: none;
+            opacity: 0;
+            animation: fadeInVignette 3s ease-in forwards;
+            animation-delay: 0.5s;
+        }
+
+        @keyframes fadeInVignette {
+            to {
+                opacity: 1;
+            }
+        }
+
+        /* Netflix sound bars */
+        .sound-bars {
+            position: absolute;
+            bottom: 50px;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            gap: 3px;
+            opacity: 0;
+            animation: fadeInBars 0.5s ease-in forwards;
+        }
+
+        .bar {
+            width: 3px;
+            height: 20px;
+            background: #e50914;
+            animation: soundWave 0.8s ease-in-out infinite;
+            transform-origin: bottom;
+        }
+
+        .bar:nth-child(1) { animation-delay: 0s; }
+        .bar:nth-child(2) { animation-delay: 0.1s; }
+        .bar:nth-child(3) { animation-delay: 0.2s; }
+        .bar:nth-child(4) { animation-delay: 0.3s; }
+        .bar:nth-child(5) { animation-delay: 0.4s; }
+
+        @keyframes soundWave {
+            0%, 100% {
+                transform: scaleY(0.3);
+                opacity: 0.5;
+            }
+            50% {
+                transform: scaleY(1);
+                opacity: 1;
+            }
+        }
+
+        @keyframes fadeInBars {
+            to {
+                opacity: 1;
+            }
+        }
+
+        /* Start message */
+        .start-message {
+            position: absolute;
+            bottom: 100px;
+            left: 50%;
+            transform: translateX(-50%);
+            color: #fff;
+            font-size: 14px;
+            opacity: 0;
+            animation: fadeInMessage 1s ease-in forwards;
+            animation-delay: 3.5s;
+        }
+
+        @keyframes fadeInMessage {
+            to {
+                opacity: 1;
+            }
+        }
+
+        /* Replay button */
+        .replay-btn {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            padding: 10px 20px;
+            background: rgba(229, 9, 20, 0.8);
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 14px;
+            opacity: 0;
+            animation: fadeInButton 1s ease-in forwards;
+            animation-delay: 4s;
+            transition: background 0.3s;
+        }
+
+        .replay-btn:hover {
+            background: #e50914;
+        }
+
+        @keyframes fadeInButton {
+            to {
+                opacity: 1;
+            }
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .netflix-logo {
+                font-size: 60px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .netflix-logo {
+                font-size: 40px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="netflix-intro">
+        <div class="vignette"></div>
+        <h1 class="netflix-logo">Codetoanbug</h1>
+        <div class="sound-bars">
+            <div class="bar"></div>
+            <div class="bar"></div>
+            <div class="bar"></div>
+            <div class="bar"></div>
+            <div class="bar"></div>
+        </div>
+        <p class="start-message">Bắt đầu xem...</p>
+        <button class="replay-btn" onclick="replay()">Phát lại</button>
+    </div>
+
+    <script>
+        function replay() {
+            const logo = document.querySelector('.netflix-logo');
+            const message = document.querySelector('.start-message');
+            const button = document.querySelector('.replay-btn');
+            const bars = document.querySelector('.sound-bars');
+            
+            // Reset animations
+            logo.style.animation = 'none';
+            message.style.animation = 'none';
+            button.style.animation = 'none';
+            bars.style.animation = 'none';
+            
+            // Force reflow
+            void logo.offsetWidth;
+            
+            // Restart animations
+            logo.style.animation = 'netflixIntro 4s cubic-bezier(0.5, 0, 0.5, 1) forwards';
+            message.style.animation = 'fadeInMessage 1s ease-in forwards';
+            message.style.animationDelay = '3.5s';
+            button.style.animation = 'fadeInButton 1s ease-in forwards';
+            button.style.animationDelay = '4s';
+            bars.style.animation = 'fadeInBars 0.5s ease-in forwards';
+        }
+
+        // Sound effect (optional - add Netflix "ta-dum" sound)
+        function playNetflixSound() {
+            // Có thể thêm audio file ở đây
+            console.log('Ta-dum!');
+        }
+
+        // Play sound when animation starts
+        setTimeout(playNetflixSound, 500);
+    </script>
+</body>
+</html>
